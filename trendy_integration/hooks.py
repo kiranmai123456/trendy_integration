@@ -10,6 +10,12 @@ app_license = "mit"
 
 # required_apps = []
 
+scheduler_events = {
+    "cron": {
+        "0 23 * * *": ["trendy_integration.api.run_daily_supplier_sync"]
+    }
+}
+
 # Each item in the list will be shown as an app in the apps page
 # add_to_apps_screen = [
 # 	{

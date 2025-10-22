@@ -1,0 +1,73 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "creation": "2025-10-21 22:11:49.954501",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "item_code",
+  "current_qty",
+  "reorder_level",
+  "column_break_elhe",
+  "item_name",
+  "item_group",
+  "suggested_qty"
+ ],
+ "fields": [
+  {
+   "fieldname": "item_code",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Item Code",
+   "options": "Item"
+  },
+  {
+   "fieldname": "current_qty",
+   "fieldtype": "Int",
+   "in_list_view": 1,
+   "label": "Current Qty"
+  },
+  {
+   "fieldname": "reorder_level",
+   "fieldtype": "Int",
+   "in_list_view": 1,
+   "label": "Reorder Level"
+  },
+  {
+   "fieldname": "suggested_qty",
+   "fieldtype": "Int",
+   "in_list_view": 1,
+   "label": "Suggested Qty"
+  },
+  {
+   "fieldname": "column_break_elhe",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fetch_from": "item_code.item_name",
+   "fieldname": "item_name",
+   "fieldtype": "Data",
+   "label": "Item Name"
+  },
+  {
+   "fetch_from": "item_code.item_group",
+   "fieldname": "item_group",
+   "fieldtype": "Data",
+   "label": "Item Group"
+  }
+ ],
+ "grid_page_length": 50,
+ "index_web_pages_for_search": 1,
+ "istable": 1,
+ "links": [],
+ "modified": "2025-10-22 16:56:21.455636",
+ "modified_by": "Administrator",
+ "module": "Trendy Integration",
+ "name": "Restock Items",
+ "owner": "Administrator",
+ "permissions": [],
+ "row_format": "Dynamic",
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}
