@@ -1,0 +1,116 @@
+Usage Guide
+
+🪜 Step 1: Sync Supplier Data
+    1. Open Supplier Settings in ERPNext.
+    2. Enter the supplier API URL (e.g. https://dummyjson.com/products).
+    3. Click Sync Now.
+
+The system will:
+    1. Fetch product data from supplier API.
+    2. Create or update Item and Item Price (10% markup).
+    3. Update Supplier Stock records with supplier quantities.
+
+
+🪜 Step 2: Review Supplier Stock
+    1. Navigate to: Desk → Supplier Stock
+    2. You’ll see all products fetched from the supplier API, along with: Item Code, Item Name, Supplier Qty and Last Synced Date
+    3. This shows supplier’s available quantities.
+
+
+🪜 Step 3: Create a Restock Plan
+
+    1. Go to Restock Plan → New
+    2. Select your warehouse (e.g. “Stores - TM”)
+    3. Save and submit the form/doc.
+    4. Click Generate Suggestions
+
+The system compares your warehouse stock (from the Bin table) and supplier stock.
+If any item’s current quantity is below the reorder level (default = 10), it appears in the plan with a suggested quantity.
+
+
+🪜 Step 4: Create Purchase Orders
+
+    1. After reviewing the restock suggestions:
+    2. Click Create Purchase Orders
+
+The app will:
+    1. Create a Purchase Order in ERPNext
+    2. Add all low-stock items with suggested quantities
+    3. Use the Default Supplier from Supplier Settings
+
+💡 You can review or submit the Purchase Order as usual in ERPNext.
+
+
+🪜 Step 5: Enable Daily Auto Sync
+
+If “Enable Auto Sync” is checked in Supplier Settings, the system automatically runs run_daily_supplier_sync() once every day.
+
+
+🌐 REST APIs Overview
+
+You can use these APIs to integrate ERPNext with external systems.
+
+🔹 1. Get Restock Summary (GET)
+
+Endpoint: /api/method/trendy_integration.api.get_restock_summary
+
+Example Request:
+
+curl -X GET \
+     -H "Authorization: token <api_key>:<api_secret>" \
+     https://your-site/api/method/trendy_integration.api.get_restock_summary
+
+Response Example:
+
+{
+  "items": [
+    {
+      "item_code": "101",
+      "item_name": "Apple iPhone 14",
+      "current_qty": 3,
+      "supplier_qty": 50,
+      "suggested_qty": 7
+    }
+  ]
+}
+
+🔹 2. Create Restock Plan (POST)
+
+Endpoint: /api/method/trendy_integration.api.create_restock_plan
+
+Example Request:
+
+curl -X POST \
+     -H "Authorization: token <api_key>:<api_secret>" \
+     -H "Content-Type: application/json" \
+     -d '{
+          "warehouse": "Stores - TM",
+          "items": [
+            {"item_code": "101", "suggested_qty": 7}
+          ]
+         }' \
+     https://your-site/api/method/trendy_integration.api.create_restock_plan
+
+Response Example:
+
+{"restock_plan": "RESTOCK-0001"}
+
+
+🔐 API Authentication
+
+    1. Go to User > Select a User in ERPNext.
+    2. In the API Access section, click Generate Keys.
+    3. Use them in the Authorization header:
+
+Authorization: token <api_key>:<api_secret>
+
+🔄 Data Flow
+    [Supplier API]
+        ↓
+    [Supplier Settings] → Sync Now / Scheduler
+        ↓
+    [Item + Item Price + Supplier Stock]
+        ↓
+    [Restock Plan + Restock Item]
+        ↓
+    [Purchase Order]
